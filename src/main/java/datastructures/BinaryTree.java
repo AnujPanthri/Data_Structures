@@ -1,4 +1,6 @@
 package datastructures;
+import java.util.List;
+import java.util.ArrayList;
 
 class BinaryNode<T>{
     T data;
@@ -23,20 +25,29 @@ public class BinaryTree<T> {
                 temp.right=new BinaryNode<T>(val);
         }
     }
-    public void preorder(BinaryNode<T> temp){
-        if (temp==null) return;
-        System.out.print(temp.data+",");
-        preorder(temp.left);
-        preorder(temp.right);
+    public List<T> preorder(BinaryNode<T> temp,boolean recursive){
+        List<T> out=new ArrayList<T>();
+        if (recursive)
+            preorder_recursive(temp,out);
+        else
+            preorder_iterative(temp,out);
+        
+        return out;
     }
-    public void preorder_traversal(BinaryNode<T> temp){
+    public void preorder_recursive(BinaryNode<T> temp,List<T> out){
+        if (temp==null) return;
+        out.add(temp.data);
+        preorder_recursive(temp.left,out);
+        preorder_recursive(temp.right,out);
+    }
+    public void preorder_iterative(BinaryNode<T> temp,List<T> out){
         // dfs implementation
         Stack<BinaryNode<T>> s1=new Stack<BinaryNode<T>>();
         BinaryNode<T> tempnode;
         s1.push(temp);
         while(!s1.isEmpty()){
             tempnode=s1.pop();
-            System.out.print(tempnode.data+",");
+            out.add(tempnode.data);
             if(tempnode.right!=null){
                 s1.push(tempnode.right);
             }
@@ -45,13 +56,23 @@ public class BinaryTree<T> {
             }
         }
     }
-    public void postorder(BinaryNode<T> temp){
-        if (temp==null) return;
-        postorder(temp.left);
-        postorder(temp.right);
-        System.out.print(temp.data+",");
+    public List<T> postorder(BinaryNode<T> temp,boolean recursive){
+        List<T> out=new ArrayList<T>();
+        if (recursive)
+            postorder_recursive(temp,out);
+        else
+            postorder_iterative(temp,out);
+        
+        return out;
     }
-    public void postorder_traversal(BinaryNode<T> temp){
+    public void postorder_recursive(BinaryNode<T> temp,List<T> out){
+        if (temp==null) return ;
+        postorder_recursive(temp.left,out);
+        postorder_recursive(temp.right,out);
+        out.add(temp.data);
+    }
+
+    public void postorder_iterative(BinaryNode<T> temp,List<T> out){
         // using 2 stacks
         Stack<BinaryNode<T>> s1 = new Stack<BinaryNode<T>>();
         Stack<BinaryNode<T>> s2 = new Stack<BinaryNode<T>>();
@@ -63,24 +84,46 @@ public class BinaryTree<T> {
                 node=node.left;
             }
             else{
+                
                 node=s1.pop();
-                s2.push(node);
-                node=node.right;
-                if(node==null){
-                    while(!s2.isEmpty()){
-                        System.out.print(s2.pop().data+",");
+                if(node.right==null){// leaf node only
+                    out.add(node.data); 
+                    
+                    if(!s2.isEmpty() && s2.peek().right==node){
+                        while(!s2.isEmpty()){
+                            out.add(s2.pop().data);
+                        }
                     }
-                }   
+                    node=node.right;
+                }
+                else{   // intermediate nodes
+                    s2.push(node);
+                    node=node.right;
+                }
+                
+            
             }
+            
+        
         }
     }
-    public void inorder(BinaryNode<T> temp){
-        if (temp==null) return;
-        inorder(temp.left);
-        System.out.print(temp.data+",");
-        inorder(temp.right);
+    public List<T> inorder(BinaryNode<T> temp,boolean recursive){
+        List<T> out=new ArrayList<T>();
+        if (recursive)
+            inorder_recursive(temp,out);
+        else
+            inorder_iterative(temp,out);
+        
+        return out;
     }
-    public void inorder_traversal(BinaryNode<T> temp){
+    public void inorder_recursive(BinaryNode<T> temp,List<T> out){
+        if (temp==null) return;
+        inorder_recursive(temp.left,out);
+        out.add(temp.data);
+        inorder_recursive(temp.right,out);
+    }
+
+    public void inorder_iterative(BinaryNode<T> temp,List<T> out){
         Stack<BinaryNode<T>> s1 = new Stack<BinaryNode<T>>();
         BinaryNode<T> node;
         node=temp;
@@ -91,7 +134,7 @@ public class BinaryTree<T> {
             }
             else{
                 node=s1.pop();
-                System.out.print(node.data+",");
+                out.add(node.data);
                 node=node.right;
             }
         }
@@ -105,17 +148,17 @@ public class BinaryTree<T> {
         bt1.addNode(bt1.root.left,4,true);
         bt1.addNode(bt1.root.left,5,false);
 
-        bt1.preorder(bt1.root);
-        System.out.println();
-        bt1.preorder_traversal(bt1.root);
-        System.out.println();
-        bt1.postorder(bt1.root);
-        System.out.println();
-        bt1.postorder_traversal(bt1.root);
-        System.out.println();
-        bt1.inorder(bt1.root);
-        System.out.println();
-        bt1.inorder_traversal(bt1.root);
+        // bt1.preorder(bt1.root,true);
+        // System.out.println();
+        // bt1.preorder_traversal(bt1.root);
+        // System.out.println();
+        // bt1.postorder(bt1.root);
+        // System.out.println();
+        // bt1.postorder_traversal(bt1.root);
+        // System.out.println();
+        // bt1.inorder(bt1.root);
+        // System.out.println();
+        // bt1.inorder_traversal(bt1.root);
         
 
     }

@@ -1,5 +1,7 @@
 package datastructures;
 
+import java.util.EmptyStackException;
+
 public class Stack<T> {
     public Node<T> top=null;
     public Stack(){
@@ -30,11 +32,13 @@ public class Stack<T> {
         top=temp;
     }
     public T pop(){
+        if(isEmpty())   throw new EmptyStackException();
         T val=top.data;
         top=top.next;
         return val;
     }
     public T peek(){
+        if(isEmpty())   throw new EmptyStackException();
         return top.data;
     }
     public String toString(){
