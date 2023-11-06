@@ -106,7 +106,7 @@ public class LinkedList<T>{
         T val;
         Node<T> temp=head;
         
-        if (idx==0){
+        if (idx==0 && !isEmpty()){
             val=head.data;
             head=head.next;
             return val;

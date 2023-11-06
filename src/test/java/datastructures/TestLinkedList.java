@@ -138,8 +138,15 @@ public class TestLinkedList {
             l1.deleteNth(1);
 
         });
+        
+        Assert.assertTrue(ex1.getMessage().contains("invalid index"));
+        ex1 = Assert.assertThrows(IndexOutOfBoundsException.class, ()->{
+            l1.deleteNth(0);
+
+        });
         Assert.assertTrue(ex1.getMessage().contains("invalid index"));
         
+
         l1.insertEnd(1);
         l1.insertEnd(2);
         l1.insertEnd(3);
