@@ -50,10 +50,30 @@ public class TestBinaryTree {
         
         Assert.assertArrayEquals(result.toArray(),result.toArray());
         Assert.assertArrayEquals(result.toArray(),bt1.postorder(bt1.root, true).toArray());
-        System.out.println();
-        for(Object el : bt1.postorder(bt1.root, false).toArray()) {
-            System.out.print(el+",");
-        }
+        
+        // System.out.println();
+        // for(Object el : bt1.postorder(bt1.root, false).toArray()) {
+        //     System.out.print(el+",");
+        // }
+        Assert.assertArrayEquals(result.toArray(),bt1.postorder(bt1.root, false).toArray());
+    }
+    
+    @Test
+    public void testpostorder2(){
+        BinaryTree<Integer> bt1=new BinaryTree<Integer>();
+        bt1.root=new BinaryNode<Integer>(1);
+        bt1.addNode(bt1.root, 2, true);
+        bt1.addNode(bt1.root, 3, false);
+        bt1.addNode(bt1.root.left, 4, true);
+        bt1.addNode(bt1.root.left, 5, false);
+        bt1.addNode(bt1.root.right, 6, true);
+        bt1.addNode(bt1.root.right, 7, false);
+        
+        List<Integer> result=new ArrayList<Integer>(List.of(4,5,2,6,7,3,1));   // postorder
+        
+        Assert.assertArrayEquals(result.toArray(),result.toArray());
+        Assert.assertArrayEquals(result.toArray(),bt1.postorder(bt1.root, true).toArray());
+        
         Assert.assertArrayEquals(result.toArray(),bt1.postorder(bt1.root, false).toArray());
     }
     
