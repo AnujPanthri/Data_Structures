@@ -17,6 +17,9 @@ public class BinaryTree<T> {
     public BinaryTree(){
         root=null;
     }
+    public BinaryNode<T> createNode(T val){
+        return new BinaryNode<T>(val);
+    }
     public void addNode(BinaryNode<T> temp,T val,boolean insertLeft){
         if(temp!=null){
             if(insertLeft)
@@ -140,6 +143,35 @@ public class BinaryTree<T> {
         }
     }
 
+    public void print_list(List<Integer> l1){
+        
+        for(int val :l1){
+            System.out.print(val+",");
+        }
+        System.out.println();
+    }
+    
+    public List<T> dfs(BinaryNode<T> temp){
+        return preorder(temp, true);
+    }
+    public List<T> bfs(BinaryNode<T> temp) throws QueueException{
+        // breath first search
+        BinaryNode<T> node;
+        List<T> out=new ArrayList<T>();
+        Queue<BinaryNode<T>> q1=new Queue<BinaryNode<T>>();
+        q1.enqueue(temp);
+
+        while(!q1.isEmpty()){
+            node=q1.dequeue();
+            out.add(node.data);
+            if(node.left!=null)
+                q1.enqueue(node.left);
+            if(node.right!=null)
+                q1.enqueue(node.right);
+        }
+
+        return out;
+    }
     public static void main(String args[]){
         BinaryTree<Integer> bt1=new BinaryTree<Integer>();
         bt1.root=new BinaryNode<Integer>(1);

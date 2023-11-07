@@ -46,12 +46,8 @@ public class BinarySearchTree extends BinaryTree<Integer> {
         return temp;
     }
     
-    public void print_list(List<Integer> l1){
-        
-        for(int val :l1){
-            System.out.print(val+",");
-        }
-        System.out.println();
+    public void delete(int val){
+
     }
 
     public static void main(String args[]){

@@ -93,4 +93,40 @@ public class TestBinaryTree {
         Assert.assertArrayEquals(result.toArray(),bt1.inorder(bt1.root, true).toArray());
         Assert.assertArrayEquals(result.toArray(),bt1.inorder(bt1.root, false).toArray());
     }
+
+    @Test
+    public void testbfs() throws QueueException{
+        BinaryTree<Integer> bt1=new BinaryTree<Integer>();
+        bt1.root=new BinaryNode<Integer>(1);
+
+        bt1.root.left=bt1.createNode(2);
+        bt1.root.right=bt1.createNode(3);
+
+        bt1.root.left.left=bt1.createNode(4);
+        bt1.root.left.right=bt1.createNode(5);
+        bt1.root.right.left=bt1.createNode(6);
+        bt1.root.right.right=bt1.createNode(7);
+        
+        List<Integer> result=new ArrayList<Integer>(List.of(1,2,3,4,5,6,7));   // bfs
+        bt1.print_list(bt1.bfs(bt1.root));
+        Assert.assertArrayEquals(result.toArray(),bt1.bfs(bt1.root).toArray());
+    }
+    
+    @Test
+    public void testdfs(){
+        BinaryTree<Integer> bt1=new BinaryTree<Integer>();
+        bt1.root=new BinaryNode<Integer>(1);
+
+        bt1.root.left=bt1.createNode(2);
+        bt1.root.right=bt1.createNode(3);
+
+        bt1.root.left.left=bt1.createNode(4);
+        bt1.root.left.right=bt1.createNode(5);
+        bt1.root.right.left=bt1.createNode(6);
+        bt1.root.right.right=bt1.createNode(7);
+        
+        List<Integer> result=new ArrayList<Integer>(List.of(1,2,4,5,3,6,7));   // dfs
+        // bt1.print_list(bt1.dfs(bt1.root));
+        Assert.assertArrayEquals(result.toArray(),bt1.dfs(bt1.root).toArray());
+    }
 }
