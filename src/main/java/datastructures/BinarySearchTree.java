@@ -45,9 +45,80 @@ public class BinarySearchTree extends BinaryTree<Integer> {
         }
         return temp;
     }
+
+    public boolean search(int val){
+        BinaryNode<Integer> curr=root;
+        while(curr!=null && curr.data!=val){
+            if(val<curr.data)
+                curr=curr.left;
+            else
+                curr=curr.right;
+        }
+        return curr!=null;
+    }
     
     public void delete(int val){
+        BinaryNode<Integer> curr=root,prev=null,child=null;
+        
+        // search for node with node.data=val
+        while(curr!=null && curr.data!=val){
+            prev=curr;
+            if(val<curr.data)
+                curr=curr.left;
+            else
+                curr=curr.right;
+        }
 
+        // node not found
+        if(curr==null){
+            return;
+        }
+
+        // if node has one child or no child but not 2 childs
+        if(!(curr.left!=null && curr.right!=null)){
+            if(curr.left!=null)
+                child=curr.left;
+            else
+                child=curr.right;
+            
+            if(prev==null){
+                root=child;
+                return;
+            }
+
+            else if(prev.left==curr){
+                prev.left=child;
+            }
+            else
+                prev.right=child;
+        }
+
+        // if node has 2 childs
+        else{
+            // traverse to right once and then to the left most node of the current node
+            // to get the minimum value of the right sub tree of curr node
+
+            // curr>prev>child
+            prev=curr;
+            child=curr.right;
+            while(child.left!=null){
+                prev=child;
+                child=child.left;
+            }
+
+            // preserving the data of the node we are about to delete
+            curr.data=child.data;
+
+            // preserving the right subtree of the child node we are about to delete
+            if(prev.left==child){
+                prev.left=child.right;
+            }
+            else{
+                prev.right=child.right;
+            }
+        }
+    
+        
     }
 
     public static void main(String args[]){
@@ -64,6 +135,9 @@ public class BinarySearchTree extends BinaryTree<Integer> {
         bt1.print_list(bt1.postorder(bt1.root,true));
         bt1.print_list(bt1.inorder(bt1.root,true));
         
+        bt1.delete(35);
+        // bt1.delete(50);
+        bt1.print_list(bt1.inorder(bt1.root,true));
         // bt1.postorder(bt1.root);
         // System.out.println();
         // bt1.postorder_traversal(bt1.root);

@@ -28,13 +28,15 @@ Implementing data stuctures using java.
     - toString()
     - print()
 4. **BinaryTree**
+    - createNode(T val)
     - addNode(BinaryNode<T> node,boolean insertLeft)
-    - preorder(BinaryNode<T> node)
-    - postorder(BinaryNode<T> node)
-    - inorder(BinaryNode<T> node)
-    - preorder_traversal(BinaryNode<T> node) :- iterative approach
-    - postorder_traversal(BinaryNode<T> node) :- iterative approach
-    - inorder_traversal(BinaryNode<T> node) :- iterative approach
+    - preorder(BinaryNode<T> node,boolean recursive)
+    - postorder(BinaryNode<T> node,boolean recursive)
+    - inorder(BinaryNode<T> node,boolean recursive)
+1. **BinarySearchTree**
+    - insert(BinaryNode<Integer> root,Integer val)
+    - search(int val)
+    - delete(int val)
 
 
 ## Code example :-

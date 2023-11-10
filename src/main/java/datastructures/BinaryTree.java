@@ -97,13 +97,12 @@ public class BinaryTree<T> {
                             out.add(s2.pop().data);
                         }
                     }
-                    node=node.right;
                 }
                 else{   // intermediate nodes
                     s2.push(node);
-                    node=node.right;
                 }
                 
+                node=node.right;
             
             }
             
