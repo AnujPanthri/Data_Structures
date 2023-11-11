@@ -13,9 +13,8 @@ import java.util.ArrayList;
 //     }
 // }
 public class BinarySearchTree extends BinaryTree<Integer> {
-    BinaryNode<Integer> root=null;
     public BinarySearchTree(){
-        root=null;
+        super();
     }
 
     public BinaryNode<Integer> insert(BinaryNode<Integer> root,Integer val){

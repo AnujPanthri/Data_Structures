@@ -33,6 +33,13 @@ Implementing data stuctures using java.
     - preorder(BinaryNode<T> node,boolean recursive)
     - postorder(BinaryNode<T> node,boolean recursive)
     - inorder(BinaryNode<T> node,boolean recursive)
+    - getHeight()
+    - printTree()
+    - isFull()
+    - isDegenerate()
+    - isLeftSkewed()
+    - isRightSkewed()
+    
 1. **BinarySearchTree**
     - insert(BinaryNode<Integer> root,Integer val)
     - search(int val)

@@ -24,14 +24,15 @@ public class TestBinarySearchTree {
       /*
                       8
                     /   \
-                  3      10 
+                   3      10 
                   / \       \
-                1   6       14
+                 1   6       14
                     / \      /
-                  4   7   13
+                   4   7   13
       */
       return bst;
     }
+    
     
     public BinarySearchTree get_bst1(){
         BinarySearchTree bst=new BinarySearchTree();
@@ -53,7 +54,19 @@ public class TestBinarySearchTree {
         */
         return bst;
     }
-        
+
+    @Test
+    public void testprintTree() throws QueueException{
+      BinarySearchTree bt1=get_bst1();
+      bt1.printTree(bt1.root);
+    }
+    @Test
+    public void testprintTree2() throws QueueException{
+      BinarySearchTree bt1=get_bst2();
+      bt1.printTree(bt1.root);
+    }
+
+    @Test    
     public void testinsert(){
         BinarySearchTree bt1=get_bst1();
 
@@ -73,6 +86,8 @@ public class TestBinarySearchTree {
         Assert.assertArrayEquals(pre.toArray(),bt1.preorder(bt1.root, true).toArray());
         Assert.assertArrayEquals(post.toArray(),bt1.postorder(bt1.root, true).toArray());
         Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
+        Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
+      
     }    
 
     @Test
