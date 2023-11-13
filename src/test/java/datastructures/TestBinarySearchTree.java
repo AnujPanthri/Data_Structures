@@ -86,7 +86,6 @@ public class TestBinarySearchTree {
         Assert.assertArrayEquals(pre.toArray(),bt1.preorder(bt1.root, true).toArray());
         Assert.assertArrayEquals(post.toArray(),bt1.postorder(bt1.root, true).toArray());
         Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
-        Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
       
     }    
 

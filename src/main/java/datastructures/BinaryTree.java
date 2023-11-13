@@ -81,8 +81,7 @@ public class BinaryTree<T> {
     public void postorder_iterative(BinaryNode<T> temp,List<T> out){
         // using 2 stacks
         Stack<BinaryNode<T>> s1 = new Stack<BinaryNode<T>>();
-        Stack<BinaryNode<T>> s2 = new Stack<BinaryNode<T>>();
-        BinaryNode<T> node;
+        BinaryNode<T> node,prev=null;
         node=temp;
         while((node!=null)||!s1.isEmpty()){
             if(node!=null){
@@ -91,27 +90,65 @@ public class BinaryTree<T> {
             }
             else{
                 
-                node=s1.pop();
-                if(node.right==null){// leaf node only
-                    out.add(node.data); 
+                node=s1.peek();
+                if(node.right==null || node.right==prev){
+                    /* leaf node or node.right==last
+                     
+                          node
+                            \
+                            last
+                    */
+                    node=s1.pop(); 
                     
-                    if(!s2.isEmpty() && s2.peek().right==node){
-                        while(!s2.isEmpty()){
-                            out.add(s2.pop().data);
-                        }
-                    }
+                    out.add(node.data);
+
+
+                    prev=node;
+                    node=null;
                 }
-                else{   // intermediate nodes
-                    s2.push(node);
-                }
-                
-                node=node.right;
+                else{   
+                    node=node.right;
+                }      
             
             }
             
         
         }
     }
+    // public void postorder_iterative(BinaryNode<T> temp,List<T> out){
+    //     // using 2 stacks
+    //     Stack<BinaryNode<T>> s1 = new Stack<BinaryNode<T>>();
+    //     Stack<BinaryNode<T>> s2 = new Stack<BinaryNode<T>>();
+    //     BinaryNode<T> node;
+    //     node=temp;
+    //     while((node!=null)||!s1.isEmpty()){
+    //         if(node!=null){
+    //             s1.push(node);
+    //             node=node.left;
+    //         }
+    //         else{
+                
+    //             node=s1.pop();
+    //             if(node.right==null){// leaf node only
+    //                 out.add(node.data); 
+                    
+    //                 if(!s2.isEmpty() && s2.peek().right==node){
+    //                     while(!s2.isEmpty()){
+    //                         out.add(s2.pop().data);
+    //                     }
+    //                 }
+    //             }
+    //             else{   // intermediate nodes
+    //                 s2.push(node);
+    //             }
+                
+    //             node=node.right;
+            
+    //         }
+            
+        
+    //     }
+    // }
 
     public List<T> inorder(BinaryNode<T> temp,boolean recursive){
         List<T> out=new ArrayList<T>();
@@ -240,6 +277,7 @@ public class BinaryTree<T> {
                 q1.enqueue(curr.right);
             }       
         }
+        System.out.println();
         
         int curr_level=0;
         for(int i=0;i<bfs_list.size();i++){
@@ -333,6 +371,89 @@ public class BinaryTree<T> {
 
         return true;
     }
+    
+    public boolean isBalanced(){ return isBalanced(root);}
+    public boolean isBalanced(BinaryNode<T> root){
+        // using 2 stacks
+        Stack<BinaryNode<T>> s1 = new Stack<BinaryNode<T>>();
+        Stack<Integer> heights = new Stack<Integer>();   // for storing left/right subtree heights
+        BinaryNode<T> temp,prev=null;
+        int leftheight=0,rightheight=0,currheight=0,currdepth=0;
+	    
+        temp=root;
+
+        // postorder traversal (left,right,root) 
+        while(!s1.isEmpty() || temp!=null){
+            if(temp!=null){
+                s1.push(temp);
+                temp=temp.left;
+            }
+            else{
+                temp=s1.peek();
+                
+                // if temp is a leaf node or we are backtracking 
+                if(temp.right==null || temp.right==prev){
+                    temp=s1.pop();
+                    //  write core logic begin
+                    
+                    // order matters! we need to first pop rightheight then leftheight 
+                    // cuz we are inserted in leftheight then rightheight in a stack
+                    if(temp.right==null)
+                        rightheight=0;
+                    else
+                        rightheight=heights.pop();
+
+                    if(temp.left==null)
+                        leftheight=0;
+                    else
+                        leftheight=heights.pop();
+                    
+                    
+                    currheight=Math.max(leftheight,rightheight);
+                    currdepth=Math.abs(leftheight-rightheight);
+
+                    // System.out.print("\nnode:"+temp.data
+                    //     +"\tleftheight,rightheight: "+leftheight+","+rightheight
+                    //     +"\tcurrdepth: "+currdepth);
+                    
+                    if(currdepth>1) return false;
+
+                    heights.push(currheight+1);  // currheight+1 will be the left/right height for the parent node
+                    // write core logic end
+                    prev=temp;
+                    temp=null;
+                }
+                else{
+                    temp=temp.right;
+                }
+            }   
+        }
+        return true;
+    }
+
+    public BinaryNode<T> rightRotate(BinaryNode<T> root){
+        BinaryNode<T> leftchild;
+        if(root==null)  return root;
+        leftchild=root.left;
+        if(leftchild==null) return root;    // rotation not possible
+
+        root.left=leftchild.right;  // leftchild's right subtree is always smaller than root
+        leftchild.right=root;   // root is larger than its previously called left child
+        
+        return leftchild;
+    }
+
+    public BinaryNode<T> leftRotate(BinaryNode<T> root){
+        BinaryNode<T> rightchild;
+        if(root==null)  return root;
+        rightchild=root.right;
+        if(rightchild==null) return root;    // rotation not possible
+
+        root.right=rightchild.left;  // rightchild's left subtree is always larger than root
+        rightchild.left=root;   // root is smaller than its previously called right child
+        
+        return rightchild;
+    }
     public static void main(String args[]) throws QueueException{
         BinaryTree<Integer> bt1=new BinaryTree<Integer>();
         bt1.root=new BinaryNode<Integer>(1);
@@ -341,13 +462,35 @@ public class BinaryTree<T> {
         bt1.root.left.left=bt1.createNode(4);
         // bt1.root.left.right=bt1.createNode(5);
         
-
+        bt1.root.left.right=bt1.createNode(5);
+          
+        bt1.printTree(bt1.root);
+        System.out.println("\n");
         bt1.print_list(bt1.preorder(bt1.root,true));
         bt1.print_list(bt1.postorder(bt1.root,true));
         bt1.print_list(bt1.inorder(bt1.root,true));
-        System.out.println("Height:"+bt1.getHeight(bt1.root));
-        System.out.println("Height:"+bt1.getHeightIterative(bt1.root));
+        // System.out.println("Height:"+bt1.getHeight(bt1.root));
+        // System.out.println("Height:"+bt1.getHeightIterative(bt1.root));
         
         bt1.printTree(bt1.root);
+        bt1.root=bt1.rightRotate(bt1.root);
+        bt1.printTree(bt1.root);
+        bt1.root=bt1.rightRotate(bt1.root);
+
+        bt1.root.left=bt1.createNode(7);
+        bt1.root.left.right=bt1.createNode(8);
+        // bt1.root.left.left=bt1.createNode(6);
+        // bt1.root.left.right.right=bt1.createNode(9);
+        bt1.root.right.right.right=null;
+        bt1.printTree(bt1.root);
+
+        // bt1.root=bt1.leftRotation(bt1.root);
+        // bt1.printTree();
+        // bt1.root=bt1.leftRotation(bt1.root);
+        // bt1.printTree();
+
+        
+        System.out.println();
+        // bt1.isBalanced(bt1.root);
     }
 }

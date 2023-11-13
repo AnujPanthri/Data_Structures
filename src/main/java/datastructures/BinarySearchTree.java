@@ -120,7 +120,7 @@ public class BinarySearchTree extends BinaryTree<Integer> {
         
     }
 
-    public static void main(String args[]){
+    public static void main(String args[]) throws QueueException{
         BinarySearchTree bt1=new BinarySearchTree();
         bt1.root=bt1.insert(bt1.root,50);
         bt1.insert(bt1.root,30);
@@ -134,16 +134,17 @@ public class BinarySearchTree extends BinaryTree<Integer> {
         bt1.print_list(bt1.postorder(bt1.root,true));
         bt1.print_list(bt1.inorder(bt1.root,true));
         
-        bt1.delete(35);
+        // bt1.delete(35);
         // bt1.delete(50);
         bt1.print_list(bt1.inorder(bt1.root,true));
-        // bt1.postorder(bt1.root);
-        // System.out.println();
-        // bt1.postorder_traversal(bt1.root);
-        // System.out.println();
-        // bt1.inorder(bt1.root);
-        // System.out.println();
-        // bt1.inorder_traversal(bt1.root);
+        
+        bt1.printTree(bt1.root);
+        
+        bt1.root=bt1.rightRotate(bt1.root);
+        bt1.printTree(bt1.root);
+
+        bt1.root=bt1.rightRotate(bt1.root);
+        bt1.printTree(bt1.root);
         
 
     }

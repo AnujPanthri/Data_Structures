@@ -241,4 +241,190 @@ public class TestBinaryTree {
         Assert.assertEquals(false, bt1.isRightSkewed());
         
     }
+
+    @Test 
+    public void testrightRotate() throws QueueException{
+        BinaryTree<Integer> bt1=new BinaryTree<Integer>();
+        
+        bt1.root=new BinaryNode<Integer>(1);
+        bt1.addNode(bt1.root, 2, true);
+        bt1.addNode(bt1.root.left, 3, true);
+        bt1.addNode(bt1.root.left, 4, false);
+        bt1.addNode(bt1.root.left.right, 5, true);
+        bt1.addNode(bt1.root.left.right, 6, false);
+        
+        /*
+                   1               
+               2       -       
+             3   4   -   -   
+            - - 5 6 - - - - 
+        */
+
+        List<Integer> pre=new ArrayList<Integer>(List.of(1,2,3,4,5,6));   // preorder
+        List<Integer> post=new ArrayList<Integer>(List.of(3,5,6,4,2,1));   // postorder
+        List<Integer> in=new ArrayList<Integer>(List.of(3,2,5,4,6,1));   // inorder
+        
+        Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
+        Assert.assertArrayEquals(pre.toArray(),bt1.preorder(bt1.root, true).toArray());
+        Assert.assertArrayEquals(post.toArray(),bt1.postorder(bt1.root, true).toArray());
+
+        bt1.root=bt1.rightRotate(bt1.root);
+        /*
+                   2               
+               3       1       
+             -   -   4   -   
+            - - - - 5 6 - - 
+        */
+
+        pre=new ArrayList<Integer>(List.of(2,3,1,4,5,6));   // preorder
+
+        Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
+        Assert.assertArrayEquals(pre.toArray(),bt1.preorder(bt1.root, true).toArray());
+        
+        bt1.root.right=bt1.rightRotate(bt1.root.right);
+        /*
+                   2               
+               3       4       
+             -   -   5   1   
+            - - - - - - 6 - 
+        */
+
+        pre=new ArrayList<Integer>(List.of(2,3,4,5,1,6));   // preorder
+
+        Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
+        Assert.assertArrayEquals(pre.toArray(),bt1.preorder(bt1.root, true).toArray());
+
+
+        
+    }
+    @Test
+    public void testleftRotate(){
+        BinaryTree<Integer> bt1=new BinaryTree<Integer>();
+        
+        bt1.root=new BinaryNode<Integer>(1);
+        bt1.root.left=bt1.createNode(7);
+        bt1.root.right=bt1.createNode(2);
+        bt1.root.right.left=bt1.createNode(4);
+        bt1.root.right.right=bt1.createNode(5);
+        bt1.root.right.left.right=bt1.createNode(3);
+        
+        /*
+                   1               
+               7       2       
+             -   -   4   5   
+            - - - - - 3 - - 
+        */
+
+        List<Integer> pre=new ArrayList<Integer>(List.of(1,7,2,4,3,5));   // preorder
+        List<Integer> post=new ArrayList<Integer>(List.of(7,3,4,5,2,1));   // postorder
+        List<Integer> in=new ArrayList<Integer>(List.of(7,1,4,3,2,5));   // inorder
+        
+        Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
+        Assert.assertArrayEquals(pre.toArray(),bt1.preorder(bt1.root, true).toArray());
+        Assert.assertArrayEquals(post.toArray(),bt1.postorder(bt1.root, true).toArray());
+
+        bt1.root=bt1.leftRotate(bt1.root);
+        /*
+                   2               
+               1       5       
+             7   4   -   -   
+            - - - 3 - - - - 
+        */
+
+        pre=new ArrayList<Integer>(List.of(2,1,7,4,3,5));   // preorder
+
+        Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
+        Assert.assertArrayEquals(pre.toArray(),bt1.preorder(bt1.root, true).toArray());
+        
+        bt1.root.left=bt1.leftRotate(bt1.root.left);
+        /*
+                   2               
+               4       5       
+             1   3   -   -   
+            7 - - - - - - - 
+        */
+
+        pre=new ArrayList<Integer>(List.of(2,4,1,7,3,5));   // preorder
+
+        Assert.assertArrayEquals(in.toArray(),bt1.inorder(bt1.root, true).toArray());
+        Assert.assertArrayEquals(pre.toArray(),bt1.preorder(bt1.root, true).toArray());
+
+
+    }
+
+    @Test
+    public void testisBalanced() throws QueueException{
+
+        BinaryTree<Integer> bt1=new BinaryTree<Integer>();
+        bt1.root=new BinaryNode<Integer>(1);
+        bt1.root.left=bt1.createNode(2);
+        bt1.root.right=bt1.createNode(3);
+        bt1.root.left.left=bt1.createNode(4);
+        bt1.root.left.right=bt1.createNode(5);
+        /*
+               1
+             2   3
+            4 5 - -
+        */
+        Assert.assertEquals(true, bt1.isBalanced(bt1.root));
+        
+        bt1.root=bt1.createNode(2);
+        bt1.root.left=bt1.createNode(4);
+        bt1.root.right=bt1.createNode(1);
+        bt1.root.right.left=bt1.createNode(5);
+        bt1.root.right.right=bt1.createNode(3);
+        /*
+               2
+             4   1
+            - - 5 3
+        */
+        Assert.assertEquals(true, bt1.isBalanced(bt1.root));
+        
+        bt1.root=bt1.createNode(4);
+        bt1.root.right=bt1.createNode(2);
+        bt1.root.right.left=bt1.createNode(1);
+        bt1.root.right.right=bt1.createNode(1);
+        bt1.root.right.right.left=bt1.createNode(5);
+        bt1.root.right.right.right=bt1.createNode(3);
+        /*
+                   4
+               -       2       
+             -   -   1   1
+            - - - - - - 5 3
+        */
+        Assert.assertEquals(false, bt1.isBalanced(bt1.root));
+        
+        bt1.root=bt1.createNode(4);
+        bt1.root.left=bt1.createNode(5);
+        bt1.root.right=bt1.createNode(2);
+        bt1.root.right.left=bt1.createNode(1);
+        bt1.root.right.right=bt1.createNode(1);
+        bt1.root.right.right.left=bt1.createNode(5);
+        bt1.root.right.right.right=bt1.createNode(3);
+        /*
+                   4
+               5       2
+             -   -   1   1
+            - - - - - - 5 3
+        */
+        Assert.assertEquals(false, bt1.isBalanced(bt1.root));
+        
+        bt1.root=bt1.createNode(4);
+        bt1.root.left=bt1.createNode(5);
+        bt1.root.left.right=bt1.createNode(4);
+        bt1.root.right=bt1.createNode(2);
+        bt1.root.right.left=bt1.createNode(1);
+        bt1.root.right.right=bt1.createNode(1);
+        bt1.root.right.right.left=bt1.createNode(5);
+        bt1.root.right.right.right=bt1.createNode(3);
+        
+        /*        
+                   4
+               5       2
+             -   4   1   1
+            - - - - - - 5 3
+        */        
+        Assert.assertEquals(true, bt1.isBalanced(bt1.root));
+        
+    }
 }
