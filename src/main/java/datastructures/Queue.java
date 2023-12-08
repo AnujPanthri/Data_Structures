@@ -1,7 +1,4 @@
 package datastructures;
-
-import java.util.EmptyStackException;
-
 /*
  A Queue is reversely linked from front to rear:-
        

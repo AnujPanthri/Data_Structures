@@ -45,6 +45,10 @@ Implementing data stuctures using java.
     - search(int val)
     - delete(int val)
 
+1. **AVLTree**
+    - insert(Integer val)
+    - search(int val)
+
 
 ## Code example :-
 

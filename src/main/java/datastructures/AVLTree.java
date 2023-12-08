@@ -37,7 +37,7 @@ public class AVLTree extends BinaryTree<Integer>{
 
         Stack<BinaryNode<Integer>> s1=new Stack<BinaryNode<Integer>>();
         Stack<Integer> heights=new Stack<Integer>();    // stores left/right heights of subtrees
-        BinaryNode<Integer> prev=null,parent;
+        BinaryNode<Integer> prev=null,parent=null,subtree=null;
         int leftheight,rightheight,currheight,currdepth;
 
         // postorder traversal (left, right, root)
@@ -70,30 +70,53 @@ public class AVLTree extends BinaryTree<Integer>{
                     
                     // if temp subtree needs to be balanced we can do it in O(1)
                     if(currdepth>1){
-                        parent=root;
                         
                         if (!s1.isEmpty()){
                             if(s1.peek().left==temp || s1.peek().right==temp)
                                 parent=s1.peek();
                         }
+                        
+                        if(val<temp.data){
+                            subtree=temp.left;  // left subtree of unbalanced node
+                            if(val>subtree.data){
+                                // left-right case
+                                // inserted node is on the right of subtree of unbalanced node
+                                
+                                temp.left=leftRotate(subtree);  // additional step
+                            }
                             
+                            // left-left case
+                            // inserted node is on the left of subtree of unbalanced node
 
-                        if(leftheight>rightheight){
                             if(temp==root)
-                                root=rightRotate(root); // modify the root itself
+                                root=rightRotate(temp);
                             else if(parent.left==temp)
                                 parent.left=rightRotate(temp);  // rotate subtree and assign to the parent's left
                             else
                                 parent.right=rightRotate(temp);  // rotate subtree and assign to the parent's right
+                            
                         }
                         else{
+                            subtree=temp.right;  // right subtree of unbalanced node
+                            if(val<subtree.data){
+                                // right-left case
+                                // inserted node is on the left of subtree of unbalanced node
+
+                                temp.right=rightRotate(subtree);  // additional step
+                                
+                            }
+                            
+                            // right-right case
+                            // inserted node is on the right of subtree of unbalanced node
                             if(temp==root)
-                                root=leftRotate(root);   // modify the root itself
+                                root=leftRotate(temp);
                             else if(parent.left==temp)
-                                parent.left=leftRotate(temp);  // rotate subtree and assign to the parent's left
+                                parent.left=leftRotate(temp);  
                             else
-                                parent.right=leftRotate(temp);  // rotate subtree and assign to the parent's right
+                                parent.right=leftRotate(temp);
+                            
                         }
+
                         break;  // we should stop postorder traversal after we have done rebalancing
                     }
 
